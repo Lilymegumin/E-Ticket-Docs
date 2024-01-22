@@ -1,0 +1,199 @@
+DECLARE  @mapcbt int
+DECLARE  @mavaitro1 uniqueidentifier, @mavaitro2 uniqueidentifier, @mavaitro3 uniqueidentifier
+
+select @mavaitro1 = ma_vaitro  from dm_vaitro  where ten_vaitro  = N'Lãnh đạo Phòng GQKN'
+select @mavaitro1
+select @mavaitro2 = ma_vaitro  from dm_vaitro  where ten_vaitro  = N'Lãnh đạo Ban VP GQKN'
+select @mavaitro2
+select @mavaitro3 = ma_vaitro  from dm_vaitro  where ten_vaitro  = N'Lãnh đạo TCT'
+
+--3
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'donvi =00 and left(mansp,2) not in(01,05,03,07,04)
+or (donvi <>00 
+      and (
+               (mansp in(0201,0202) and sotien>2000000000) 
+               or (mansp not in(0201,0202) and left(mansp,2) not in(01,05,03,07,04) and sotien>1000000000)
+              )
+','CB_GQKN','2000-01-14 10:50:22.773','00','00.11205000','00.11205091','PC');
+
+--4
+
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'donvi =00 and left(mansp,2) not in(01,05,03,07,04)
+or (donvi <>00 
+      and (
+               (mansp in(0201,0202) and sotien < 3000000000) 
+               or (mansp not in(0201,0202) and left(mansp,2) not in(01,05,03,07,04) and sotien <2500000000)
+              )','CB_GQKN','2000-01-14 10:50:22.774','00','00.11205000','00.11205091','PD');
+             
+select @mapcbt =  max(pr_key) from  phancap_boithuong
+
+Insert into phancap_boithuong_vaitro (fr_key, ma_vaitro,phe_duyet)
+values (@mapcbt,  @mavaitro1, 1)
+
+--5
+
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'donvi =00 and left(mansp,2) in(03,07)
+or (donvi <>00 
+ and (
+             or (left(mansp,2) = 07 and mansp not in(0704,0706) and sotien>5000000000)
+           or (mansp in(0706) and sotien>2000000000)
+            or (left(mansp,2) in(03) and sotien>5000000000)
+         )','CB_GQKN','2000-01-14 10:50:22.775','00','00.11205000','00.11205090','PC');
+   
+--6          
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'donvi =00 and left(mansp,2) in(03,07)
+or (donvi <>00 
+      and (
+              or (left(mansp,2) in(07) and mansp not in(0704,0706) and sotien <=10000000000)
+              or (mansp in(0706) and sotien <=3000000000)
+              or (left(mansp,2) in(03) and sotien <=10000000000)
+            )','CB_GQKN','2000-01-14 10:50:22.776','00','00.11205000','00.11205090','PD');
+           
+select @mapcbt =  max(pr_key) from  phancap_boithuong
+
+Insert into phancap_boithuong_vaitro (fr_key, ma_vaitro,phe_duyet)
+values (@mapcbt,  @mavaitro1, 1)          
+
+--7          
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'mansp=0401','CB_GQKN','2000-01-14 10:50:22.777','00','00.11205000','00.11205092','PC');
+
+--8
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'mansp=0401  and sotien <=3000000000','CB_GQKN','2000-01-14 10:50:22.778','00','00.11205000','00.11205092','PD');
+
+select @mapcbt =  max(pr_key) from  phancap_boithuong
+
+Insert into phancap_boithuong_vaitro (fr_key, ma_vaitro,phe_duyet)
+values (@mapcbt,  @mavaitro1, 1) 
+
+--9
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( '
+          (mansp in(0201,0202) and sotien <=5000000000) 
+          or (mansp not in(0201,0202) and left(mansp,2) not in(01,05,03,07,04) and sotien <= 6000000000)
+          or (left(mansp,2) in(07) and mansp not in(0704,0706) and sotien <=15000000000)
+          or (mansp in(0706) and sotien <=5000000000)
+          or (left(mansp,2) in(03) and sotien <=15000000000)
+          or (mansp=0401  and sotien <=5000000000)
+            )','CB_GQKN','2000-01-14 10:50:22.779','00','00.11205000','','PD');
+select @mapcbt =  max(pr_key) from  phancap_boithuong
+
+Insert into phancap_boithuong_vaitro (fr_key, ma_vaitro,phe_duyet)
+values (@mapcbt,  @mavaitro2, 1)  
+
+--10
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'and 1=1','CB_GQKN','2000-01-14 10:50:22.780','00','','','PD');
+select @mapcbt =  max(pr_key) from  phancap_boithuong
+
+Insert into phancap_boithuong_vaitro (fr_key, ma_vaitro,phe_duyet)
+values (@mapcbt,  @mavaitro3, 1) 
+
+--11
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'donvi in(01,02,03,04,05,06,07,08,09,10,12,13,26,28,34,38,41,42)
+and (
+         (mansp in(0201,0202) and sotien<=2000000000) 
+         or (mansp not in(0201,0202) and left(mansp,2) not in(01,05,03,07) and sotien<=1000000000)','CB_GQKN','2000-01-14 10:50:22.781','31','','31.18281000','PC');
+        
+--12        
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'donvi in(01,02,03,04,05,06,07,08,09,10,12,13,26,28,34,38,41,42)
+and (
+         (mansp in(0201,0202) and sotien<=1000000000) 
+         or (mansp not in(0201,0202) and left(mansp,2) not in(01,05,03,07) and sotien<=500000000)','CB_GQKN','2000-01-14 10:50:22.782','31','','31.18281000','PC');
+select @mapcbt =  max(pr_key) from  phancap_boithuong
+
+Insert into phancap_boithuong_vaitro (fr_key, ma_vaitro,phe_duyet)
+values (@mapcbt,  @mavaitro1, 1) 
+
+--13   
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'donvi in(01,02,03,04,05,06,07,08,09,10,12,13,26,28,34,38,41,42)
+and (
+        (left(mansp,2) in(07) and mansp not in(0704,0706) and sotien<=5000000000)
+        or (mansp in(0706) and sotien<=2000000000)
+        or (left(mansp,2) in(03) and sotien<=5000000000)','CB_GQKN','2000-01-14 10:50:22.783','31','','31.18280000','PC');
+
+--14     
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'donvi in(01,02,03,04,05,06,07,08,09,10,12,13,26,28,34,38,41,42)
+and (
+        (left(mansp,2) in(07) and mansp not in(0704,0706) and sotien<=3000000000)
+        or (mansp in(0706) and sotien<=1000000000)
+        or (left(mansp,2) in(03) and sotien<=3000000000)','CB_GQKN','2000-01-14 10:50:22.784','31','','31.18280000','PC');
+select @mapcbt =  max(pr_key) from  phancap_boithuong
+
+Insert into phancap_boithuong_vaitro (fr_key, ma_vaitro,phe_duyet)
+values (@mapcbt,  @mavaitro1, 1) 
+
+--15            
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'donvi in(01,02,03,04,05,06,07,08,09,10,12,13,26,28,34,38,41,42)
+and (
+          (mansp in(0201,0202) and sotien <=2000000000) 
+          or (mansp not in(0201,0202) and left(mansp,2) not in(01,05,03,07,04) and sotien <= 1000000000)
+          or (left(mansp,2) in(07) and mansp not in(0704,0706) and sotien <=5000000000)
+          or (mansp in(0706) and sotien <=2000000000)
+          or (left(mansp,2) in(03) and sotien <=5000000000)','CB_GQKN','2000-01-14 10:50:22.785','31','','','PD');
+select @mapcbt =  max(pr_key) from  phancap_boithuong
+
+Insert into phancap_boithuong_vaitro (fr_key, ma_vaitro,phe_duyet)
+values (@mapcbt,  @mavaitro2, 1) 
+
+--16            
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'donvi not in(00,01,02,03,04,05,06,07,08,09,10,12,13,26,28,34,38,41,42)
+and (
+         (mansp in(0201,0202) and sotien<=2000000000) 
+         or (mansp not in(0201,0202) and left(mansp,2) not in(01,05,03,07) and sotien<=1000000000)','CB_GQKN','2000-01-14 10:50:22.786','32','','32.11000000','PC');
+
+--17         
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'donvi not in(00,01,02,03,04,05,06,07,08,09,10,12,13,26,28,34,38,41,42)and (
+         (mansp in(0201,0202) and sotien<=1000000000) 
+         or (mansp not in(0201,0202) and left(mansp,2) not in(01,05,03,07) and sotien<=500000000)','CB_GQKN','2000-01-14 10:50:22.787','32','','32.11000000','PD');
+
+select @mapcbt =  max(pr_key) from  phancap_boithuong
+
+Insert into phancap_boithuong_vaitro (fr_key, ma_vaitro,phe_duyet)
+values (@mapcbt,  @mavaitro1, 1) 
+
+--18         
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'donvi not in(00,01,02,03,04,05,06,07,08,09,10,12,13,26,28,34,38,41,42)
+and (
+         (left(mansp,2) in(07) and mansp not in(0704,0706) and sotien<=5000000000)
+        or (mansp in(0706) and sotien<=2000000000)
+        or (left(mansp,2) in(03) and sotien<=5000000000)','CB_GQKN','2000-01-14 10:50:22.788','32','','32.10900000','PC');
+
+--19        
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'donvi not in(00,01,02,03,04,05,06,07,08,09,10,12,13,26,28,34,38,41,42)and (
+        (left(mansp,2) in(07) and mansp not in(0704,0706) and sotien<=3000000000)
+        or (mansp in(0706) and sotien<=1000000000)
+        or (left(mansp,2) in(03) and sotien<=3000000000)','CB_GQKN','2000-01-14 10:50:22.789','32','','32.10900000','PD');
+
+select @mapcbt =  max(pr_key) from  phancap_boithuong
+
+Insert into phancap_boithuong_vaitro (fr_key, ma_vaitro,phe_duyet)
+values (@mapcbt,  @mavaitro1, 1) 
+
+--20       
+INSERT INTO phancap_boithuong (cong_thuc,mo_ta,ngay_hl,donvi_gqkn,ban_gqkn,phong_gqkn,loai_pc) VALUES
+( 'donvi not in(00,01,02,03,04,05,06,07,08,09,10,12,13,26,28,34,38,41,42)and (
+          (mansp in(0201,0202) and sotien <=2 000000000) 
+          or (mansp not in(0201,0202) and left(mansp,2) not in(01,05,03,07,04) and sotien <= 1000000000)
+          or (left(mansp,2) in(07) and mansp not in(0704,0706) and sotien <=5000000000)
+          or (mansp in(0706) and sotien <=2000000000)
+          or (left(mansp,2) in(03) and sotien <=5000000000)','CB_GQKN','2000-01-14 10:50:22.790','32','','','PD');
+
+select @mapcbt =  max(pr_key) from  phancap_boithuong
+
+Insert into phancap_boithuong_vaitro (fr_key, ma_vaitro,phe_duyet)
+values (@mapcbt,  @mavaitro2, 1) 
